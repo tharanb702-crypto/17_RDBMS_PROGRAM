@@ -1,0 +1,31 @@
+name: PL-SQL Autograding
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  autograding:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Required Files
+        run: |
+          test -f README.md
+          test -f starter.sql
+          test -f solution.sql
+          test -f test.sql
+          test -f .github/workflows/autograding.yml
+          echo "All required files are present."
+
+      - name: Verify PL/SQL Procedure
+        run: |
+          grep -qi "CREATE OR REPLACE PROCEDURE" solution.sql
+          grep -qi "INSERT INTO Student" solution.sql
+          grep -qi "StudentID" solution.sql
+          grep -qi "StudentName" solution.sql
+          grep -qi "DepartmentID" solution.sql
+          echo "PL/SQL procedure verified successfully."
